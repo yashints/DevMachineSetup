@@ -93,6 +93,9 @@ $choice = Read-Host "Enter your git email address:"
 git config --global user.email $choice
 git config --global core.editor code -w
 git config --global init.defaultBranch main
+git config --global gpg.program "C:\Program Files (x86)\GnuPG\bin\gpg.exe"
+git config --global user.signingkey 'DD33CE66CD972CE0EE98A307201E55E59FD503B9'
+git config commit.gpgsign true
 
 Clear-Host
 Write-Host "Installing Oh My Posh" -ForegroundColor Green
