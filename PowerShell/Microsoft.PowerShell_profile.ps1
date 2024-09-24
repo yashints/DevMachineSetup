@@ -1,5 +1,5 @@
 # The first time the Terminal-Icons module needs to be installed:
-# Install-Module -Name Terminal-Icons -Repository PSGallery
+# Install-Module -Name Terminal-Icons -Repository PSGallery 
 # helper
 function Import-Module-With-Measure {  
     param ($ModuleName)
