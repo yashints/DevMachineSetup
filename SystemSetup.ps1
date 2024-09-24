@@ -1,9 +1,21 @@
+Write-Host "Installing PowerShell" -ForegroundColor Green 
+
+winget source update
+
+Add-AppxPackage -RegisterByFamilyName -MainPackage https://winget.azureedge.net/cache/source.msix
+
+Write-Host "Installing PowerShell" -ForegroundColor Green 
+
+winget install --id=Microsoft.PowerShell -e 
+
 $WarningPreference = "SilentlyContinue"
 $ErrorActionPreference = "Continue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Set-ExecutionPolicy Unrestricted -Force
 Install-PSResource -Name PSReadLine -Prerelease
 
+Write-Host "Please Enter to continue"  -ForegroundColor Cyan 
+Read-Host
 #####################################################################################################################################################################################################
 #                                                   PRE-REQUISITES
 #####################################################################################################################################################################################################
@@ -12,6 +24,8 @@ Write-Host "Please Enter Your Desired Computer Name: "  -ForegroundColor Cyan
 $ComputerName = Read-Host 
 Rename-Computer -NewName $ComputerName | Out-Null
 
+Write-Host "Please Enter to continue"  -ForegroundColor Cyan 
+Read-Host
 #####################################################################################################################################################################################################
 #                                                   Windows Setup
 #####################################################################################################################################################################################################
@@ -22,39 +36,21 @@ dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux 
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 dism.exe /online /Add-Capability /CapabilityName:Tools.DeveloperMode.Core~~~~0.0.1.0
 
+Write-Host "Installing Dev Home" -ForegroundColor Green
+
+winget install --id=Microsoft.DevHome  --source winget
+
 # Install WSL
 Write-Host "Installing Install WSL" -ForegroundColor Magenta 
 
-wsl --set-default-version 2
 
 $distributions = wsl -l -o
-$distros = $distributions | Select-Object -Skip 7 | Where-Object { $_.Trim() -ne "" }
-$distroList = $distros -replace '\s{2,}', ' ' | ForEach-Object { ($_ -split ' ')[0] }
 
-$index = 1
-$distroList | ForEach-Object {
-    Write-Host "$index. $_"
-    $index++
-}
+$choice = Read-Host "Enter your distro"
 
-$choice = Read-Host "Please select a distro to install (enter number)"
-$selectedDistro = $distroList[$choice - 1]
+wsl --install -d $choice 
 
-$validChoice = $false
-while (-not $validChoice) {
-    $choice = Read-Host "Please select a distro to install (enter number)"
-    
-    # Check if the input is a valid number and within range
-    if ([int]::TryParse($choice, [ref]$null) -and $choice -ge 1 -and $choice -le $distroList.Count) {
-        $validChoice = $true
-        $selectedDistro = $distroList[$choice - 1]
-        Write-Host "You chose $selectedDistro, let's get it installed" -ForegroundColor Magenta 
-        wsl --install -d $selectedDistro
-    } else {
-        Write-Host "Invalid selection. Please enter a number between 1 and $($distroList.Count)." -ForegroundColor Red
-    }
-}
-
+wsl --set-default-version 2
 
 Write-Host "Moving WSL installation to another drive" -ForegroundColor Magenta 
 
@@ -91,8 +87,6 @@ Write-Host "Installing Git" -ForegroundColor Green
 
 winget install --id=Git.Git  -e
 
-Update-SessionEnvironment
-
 $choice = Read-Host "Enter your git full name:"
 git config --global user.name = $choice
 $choice = Read-Host "Enter your git email address:"
@@ -112,10 +106,6 @@ winget install --id=GitHub.cli  --source winget
 Write-Host "Installing Azure Function Core Tools" -ForegroundColor Green
 
 winget install --id=Microsoft.Azure.FunctionsCoreTools -e  --source winget
-
-Write-Host "Installing Dev Home" -ForegroundColor Green
-
-winget install --id=Microsoft.DevHome  --source winget
 
 Write-Host "Installing NodeJs" -ForegroundColor Green
 
@@ -190,9 +180,6 @@ code-insiders --install-extension ms-vscode-remote.remote-wsl --force
 code-insiders --install-extension ms-dotnettools.csdevkit --force
 code-insiders --install-extension ms-vscode.PowerShell --force
 
-Write-Host "Installing PowerShell" -ForegroundColor Green 
-
-winget install --id=Microsoft.PowerShell  --source winget
 
 Write-Host "Installing GSudo" -ForegroundColor Green 
 
@@ -235,6 +222,9 @@ winget install --id=Microsoft.Sysinternals.ZoomIt  -e
 
 Write-Host "Installing DevToys" -ForegroundColor Magenta
 winget install --id=DevToys-app.DevToys  -e
+
+Write-Host "Installing EarTrumpet" -ForegroundColor Magenta
+winget install --id=File-New-Project.EarTrumpet -e
 
 #####################################################################################################################################################################################################
 #                                                   REMOVING PREINSTALLED APPS

@@ -9,8 +9,6 @@ function Import-Module-With-Measure {
     Write-Host "$ModuleName import $($import.TotalMilliseconds) ms"
 }
 
-Import-Module posh-git
-Import-Module oh-my-posh
 Import-Module -Name Terminal-Icons
 oh-my-posh --init --shell pwsh --config "~/AppData/Local/Programs/oh-my-posh/themes/unicorn.omp.json" | Invoke-Expression
 

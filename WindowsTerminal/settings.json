@@ -45,7 +45,7 @@
     {
         "defaults": 
         {
-            "backgroundImage": "C:\\Yas\\OneDrive\\Pictures\\Wallpaper\\windows-11-dark-4k-r6.jpg",
+            "backgroundImage": "D:\\Yas\\OneDrive\\Pictures\\Wallpaper\\windows-11-dark-4k-r6.jpg",
             "backgroundImageOpacity": 0.29999999999999999,
             "cursorShape": "vintage",
             "font": 
@@ -75,12 +75,7 @@
                 "hidden": false,
                 "name": "Azure Cloud Shell",
                 "source": "Windows.Terminal.Azure"
-            },
-            {
-                "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-                "hidden": false,
-                "name": "Windows PowerShell"
-            },
+            },            
             {
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
